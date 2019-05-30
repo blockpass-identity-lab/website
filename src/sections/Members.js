@@ -106,9 +106,9 @@ const MemberTag = styled.div`
 const MemberProfile = ({
   name,
   bio,
-  // profilePicture,
+  profilePicture,
 }) => {
-  console.log(name, bio)
+  console.log(profilePicture)
   return (
     <Card p={0}>
       <Flex style={{ height: CARD_HEIGHT }}>
@@ -124,7 +124,7 @@ const MemberProfile = ({
         </TextContainer>
 
         <ImageContainer>
-          {/*<ProfileImage src={profilePicture.image.src} alt={profilePicture.title} />*/}
+          {profilePicture && <ProfileImage src={profilePicture.file.url} alt={profilePicture.title} />}
           <MemberTag>
             <Flex
               style={{
@@ -179,6 +179,12 @@ const Members = () => (
               node {
                 name
                 bio
+                profilePicture {
+                  title
+                  file {
+                    url
+                  }
+                }
               }
             }
           }
@@ -190,7 +196,7 @@ const Members = () => (
             console.log(p.node)
             return (
               <Fade bottom delay={i * 200}>
-                <MemberProfile key={p.node.id} name={p.node.name} bio={p.node.bio} />
+                <MemberProfile key={p.node.id} name={p.node.name} bio={p.node.bio} profilePicture={p.node.profilePicture} />
               </Fade>
             )
           })}
