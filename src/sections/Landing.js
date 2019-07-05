@@ -7,6 +7,7 @@ import Section from '../components/Section';
 import SocialLink from '../components/SocialLink';
 import MouseIcon from '../components/MouseIcon';
 import Triangle from '../components/Triangle';
+import { Link} from "gatsby"
 import Header_logo_circle from '../../media/header_logo_circle.svg';
 
 const Background = () => (
@@ -70,7 +71,8 @@ const LandingPage = () => (
         mb={[3, 4, 5]}
         >
         {/* <div> */}
-           <img src={Header_logo_circle} width="60%" style="top: -5%;" alt="Blockpass Identity Lab"/>  
+           <img src={Header_logo_circle} width="60%"
+                alt="Blockpass Identity Lab"/>
         {/* </div> */}
       </Heading>
 

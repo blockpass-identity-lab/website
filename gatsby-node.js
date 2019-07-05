@@ -12,11 +12,6 @@ exports.createPages = ({graphql, boundActionCreators}) => {
               node {
                 id
                 title
-                blog {
-                  childMarkdownRemark {
-                      rawMarkdownBody
-                  }
-                }
               }
             }
           }
