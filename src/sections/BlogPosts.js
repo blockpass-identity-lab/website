@@ -10,8 +10,10 @@ import { CardContainer, Card } from '../components/Card';
 import Triangle from '../components/Triangle';
 // import ImageSubtitle from '../components/ImageSubtitle';
 // import Hide from '../components/Hide';
-// import { BLOCKS, MARKS } from "@contentful/rich-text-types"
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
+import ReactMarkdown from "react-markdown";
+// import SocialLink from '../components/SocialLink';
+import markdownRenderer from '../components/MarkdownRenderer';
+import Modal from "styled-react-modal";
 
 const Background = () => (
   <div>
@@ -79,6 +81,25 @@ const ImageContainer = styled.div`
   }
 `;
 
+const StyledModal = Modal.styled`
+  width: 80%;
+  height: 800px;
+    padding: 20px 10%;
+  margin: 10px
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  overflow: scroll;
+
+  opacity: 0.95;
+  background-color: ${props => props.theme.colors.backgroundDark};
+`;
+
+const ModalDiv = styled.div`
+
+`;
+
 // const BlogPost = styled(Image)`
 //   width: ${CARD_HEIGHT};
 //   height: ${CARD_HEIGHT};
@@ -106,61 +127,19 @@ const BlogTag = styled.div`
 `;
 
 const BlogPostView = ({
-  content,
   title,
+  onSelectBlog
   // Blog Post,
 }) => {
-  console.log(content.json)
   return (
-    <Card p={0}>
+    <Card onClick={onSelectBlog} p={0}>
       <Flex style={{ height: CARD_HEIGHT }}>
         <TextContainer>
-        <span>
           <Title my={2} pb={1}>
             {title}
           </Title>
-        </span>
-          <Text width={[1]} style={{ overflow: 'auto' }}>
-          {documentToReactComponents(content.json)}
-
-          </Text>
         </TextContainer>
-        {/* <RichTextContainer>
-          <Text width={[1]} style={{ overflow: 'auto' }}>
-            {content.json}
-          </Text>
-        </RichTextContainer> */}
 
-        <ImageContainer>
-          {/*<ProfileImage src={profilePicture.image.src} alt={profilePicture.title} />*/}
-          <BlogTag>
-            <Flex
-              style={{
-                float: 'right',
-              }}
-            >
-              {/*<Box mx={1} fontSize={5}>*/}
-              {/*<SocialLink*/}
-              {/*name="See project"*/}
-              {/*fontAwesomeIcon="globe"*/}
-              {/*url={projectUrl}*/}
-              {/*/>*/}
-              {/*</Box>*/}
-            </Flex>
-            {/*<ImageSubtitle*/}
-            {/*bg="primaryLight"*/}
-            {/*color="white"*/}
-            {/*y="bottom"*/}
-            {/*x="right"*/}
-            {/*round*/}
-            {/*>*/}
-            {/*{type}*/}
-            {/*</ImageSubtitle>*/}
-            {/*<Hide query={MEDIA_QUERY_SMALL}>*/}
-            {/*<ImageSubtitle bg="backgroundDark">{publishedDate}</ImageSubtitle>*/}
-            {/*</Hide>*/}
-          </BlogTag>
-        </ImageContainer>
       </Flex>
     </Card>
   );
@@ -176,17 +155,23 @@ BlogPostView.propTypes = {
   }).isRequired,
 };
 
-const BlogPosts = () => (
-  <Section.Container id="BlogPost" Background={Background}>
-    <Section.Header name="BlogPost" icon="💻" Box="notebook" />
-    <StaticQuery
-      query={graphql`
+const BlogPosts = () => {
+
+  const [selectedBlog, setSelectedBlog] = React.useState(null);
+
+  return (
+    <Section.Container id="BlogPost" Background={Background}>
+      <Section.Header name="BlogPost" icon="💻" Box="notebook" />
+      <StaticQuery
+        query={graphql`
       query AllBlogPostQuery {
         allContentfulBlogPost {
           edges {
             node {
-              content {
-                json
+              blog {
+                childMarkdownRemark {
+                    rawMarkdownBody
+                }
                }
                title
              }
@@ -194,21 +179,39 @@ const BlogPosts = () => (
           }
         }
       `}
-      render={({ allContentfulBlogPost }) => (
-        <CardContainer minWidth="350px">
-          {allContentfulBlogPost.edges.map((p, i) => {
-            console.log(p.node)
-            return (
-              <Fade bottom delay={i * 200}>
-                <BlogPostView key={p.node.id} content={p.node.content} title={p.node.title} />
-                {/* documentToReactComponents(node.bodyRichText.json, RichTextContainer) */}
-              </Fade>
-            )
-          })}
-        </CardContainer>
+        render={({ allContentfulBlogPost }) => (
+          <CardContainer minWidth="350px">
+            {allContentfulBlogPost.edges.map((p, i) => {
+              console.log(p.node)
+              return (
+                <Fade bottom delay={i * 200}>
+                  <BlogPostView onSelectBlog={() => setSelectedBlog(p.node)} key={p.node.id} title={p.node.title} />
+                  {/* documentToReactComponents(node.bodyRichText.json, RichTextContainer) */}
+                </Fade>
+              )
+            })}
+          </CardContainer>
+
+        )}
+      />
+      {selectedBlog && (
+        <StyledModal
+          isOpen={selectedBlog != null}
+          onBackgroundClick={() => setSelectedBlog(null)}
+          onEscapeKeydown={() => setSelectedBlog(null)}
+        >
+          {/* TODO add member detail! */}
+          {/*<ModalDiv>*/}
+          <h1>{selectedBlog.title}</h1>
+          <ReactMarkdown source={selectedBlog.blog.childMarkdownRemark.rawMarkdownBody}
+                         renderers={markdownRenderer}
+          />
+          {/*</ModalDiv>*/}
+          <button onClick={() => setSelectedBlog(null)}>Close me</button>
+        </StyledModal>
       )}
-    />
-  </Section.Container>
-);
+    </Section.Container>
+  );
+}
 
 export default BlogPosts;

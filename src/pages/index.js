@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Members from "../sections/Members";
 import About from "../sections/About";
+import BlogPosts from "../sections/BlogPosts";
 
 const IndexPage = () => (
   <Layout>
@@ -15,6 +16,7 @@ const IndexPage = () => (
     <Landing />
     <About />
     <Members />
+      <BlogPosts/>
     <Footer />
   </Layout>
 );
