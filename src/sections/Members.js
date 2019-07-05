@@ -4,11 +4,11 @@ import { Image, Text, Flex } from 'rebass';
 import { StaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import Fade from 'react-reveal/Fade';
+import Modal from 'styled-react-modal'
 import Section from '../components/Section';
 import { CardContainer, Card } from '../components/Card';
 // import SocialLink from '../components/SocialLink';
 import Triangle from '../components/Triangle';
-import Modal from 'styled-react-modal'
 // import ImageSubtitle from '../components/ImageSubtitle';
 // import Hide from '../components/Hide';
 
@@ -125,11 +125,11 @@ const MemberProfile = ({
     <Card p={0} onClick={onSelectMember}>
       <Flex style={{ height: CARD_HEIGHT }}>
         <TextContainer>
-        <span>
-          <Title my={2} pb={1}>
-            {name}
-          </Title>
-        </span>
+          <span>
+            <Title my={2} pb={1}>
+              {name}
+            </Title>
+          </span>
           <Text width={[1]} style={{ overflow: 'auto' }}>
             {researchFocus}
           </Text>
@@ -143,26 +143,26 @@ const MemberProfile = ({
                 float: 'right',
               }}
             >
-              {/*<Box mx={1} fontSize={5}>*/}
-              {/*<SocialLink*/}
-              {/*name="See project"*/}
-              {/*fontAwesomeIcon="globe"*/}
-              {/*url={projectUrl}*/}
-              {/*/>*/}
-              {/*</Box>*/}
+              {/* <Box mx={1} fontSize={5}> */}
+              {/* <SocialLink */}
+              {/* name="See project" */}
+              {/* fontAwesomeIcon="globe" */}
+              {/* url={projectUrl} */}
+              {/* /> */}
+              {/* </Box> */}
             </Flex>
-            {/*<ImageSubtitle*/}
-            {/*bg="primaryLight"*/}
-            {/*color="white"*/}
-            {/*y="bottom"*/}
-            {/*x="right"*/}
-            {/*round*/}
-            {/*>*/}
-            {/*{type}*/}
-            {/*</ImageSubtitle>*/}
-            {/*<Hide query={MEDIA_QUERY_SMALL}>*/}
-            {/*<ImageSubtitle bg="backgroundDark">{publishedDate}</ImageSubtitle>*/}
-            {/*</Hide>*/}
+            {/* <ImageSubtitle */}
+            {/* bg="primaryLight" */}
+            {/* color="white" */}
+            {/* y="bottom" */}
+            {/* x="right" */}
+            {/* round */}
+            {/* > */}
+            {/* {type} */}
+            {/* </ImageSubtitle> */}
+            {/* <Hide query={MEDIA_QUERY_SMALL}> */}
+            {/* <ImageSubtitle bg="backgroundDark">{publishedDate}</ImageSubtitle> */}
+            {/* </Hide> */}
           </MemberTag>
         </ImageContainer>
       </Flex>
@@ -224,9 +224,14 @@ const Members = () => {
               <StyledModal
                 isOpen={selectedMember != null}
                 onBackgroundClick={() => setSelectedMember(null)}
-                onEscapeKeydown={() => setSelectedMember(null)}>
+                onEscapeKeydown={() => setSelectedMember(null)}
+              >
                 {/* TODO add member detail! */}
-                <span>I am {selectedMember.name}s modal</span>
+                <span>
+I am
+                  {selectedMember.name}
+s modal
+                </span>
                 <button onClick={() => setSelectedMember(null)}>Close me</button>
               </StyledModal>
             )}

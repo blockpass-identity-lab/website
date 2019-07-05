@@ -13,7 +13,7 @@ const IndexPage = () => (
     <Header />
     <Landing />
     <Members />
-    <Footer/>
+    <Footer />
   </Layout>
 );
 
