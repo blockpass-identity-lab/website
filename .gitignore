@@ -68,3 +68,5 @@ netlify.toml
 
 # mac FS
 .DS_Store
+
+/.idea

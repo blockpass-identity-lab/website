@@ -5,7 +5,7 @@ import Landing from '../sections/Landing';
 // import Projects from '../sections/Projects';
 // import Writing from '../sections/Writing';
 import Header from '../components/Header';
-// import Footer from '../components/Footer';
+import Footer from '../components/Footer';
 import Members from "../sections/Members";
 
 const IndexPage = () => (
@@ -13,6 +13,7 @@ const IndexPage = () => (
     <Header />
     <Landing />
     <Members />
+    <Footer/>
   </Layout>
 );
 

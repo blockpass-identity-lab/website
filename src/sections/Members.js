@@ -8,6 +8,7 @@ import Section from '../components/Section';
 import { CardContainer, Card } from '../components/Card';
 // import SocialLink from '../components/SocialLink';
 import Triangle from '../components/Triangle';
+import Modal from 'styled-react-modal'
 // import ImageSubtitle from '../components/ImageSubtitle';
 // import Hide from '../components/Hide';
 
@@ -91,6 +92,15 @@ const ProfileImage = styled(Image)`
   }
 `;
 
+const StyledModal = Modal.styled`
+  width: 20rem;
+  height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${props => props.theme.colors.backgroundDark};
+`
+
 const MemberTag = styled.div`
   position: relative;
   height: ${CARD_HEIGHT};
@@ -105,12 +115,14 @@ const MemberTag = styled.div`
 
 const MemberProfile = ({
   name,
-  bio,
+  researchFocus,
   profilePicture,
+  onSelectMember
 }) => {
+
   console.log(profilePicture)
   return (
-    <Card p={0}>
+    <Card p={0} onClick={onSelectMember}>
       <Flex style={{ height: CARD_HEIGHT }}>
         <TextContainer>
         <span>
@@ -119,7 +131,7 @@ const MemberProfile = ({
           </Title>
         </span>
           <Text width={[1]} style={{ overflow: 'auto' }}>
-            {bio}
+            {researchFocus}
           </Text>
         </TextContainer>
 
@@ -160,7 +172,7 @@ const MemberProfile = ({
 
 MemberProfile.propTypes = {
   name: PropTypes.string.isRequired,
-  bio: PropTypes.string.isRequired,
+  researchFocus: PropTypes.string.isRequired,
   profilePicture: PropTypes.shape({
     image: PropTypes.shape({
       src: PropTypes.string,
@@ -168,17 +180,25 @@ MemberProfile.propTypes = {
   }).isRequired,
 };
 
-const Members = () => (
-  <Section.Container id="members" Background={Background}>
-    <Section.Header name="Members" icon="💻" Box="notebook" />
-    <StaticQuery
-      query={graphql`
+const Members = () => {
+
+  const [selectedMember, setSelectedMember] = React.useState(null);
+
+
+
+
+  return (
+
+    <Section.Container id="members" Background={Background}>
+      <Section.Header name="Members" icon="💻" Box="notebook" />
+      <StaticQuery
+        query={graphql`
         query AllMemberQuery {
           allContentfulMember {
             edges {
               node {
                 name
-                bio
+                researchFocus
                 profilePicture {
                   title
                   file {
@@ -190,20 +210,32 @@ const Members = () => (
           }
         }
       `}
-      render={({ allContentfulMember }) => (
-        <CardContainer minWidth="350px">
-          {allContentfulMember.edges.map((p, i) => {
-            console.log(p.node)
-            return (
-              <Fade bottom delay={i * 200}>
-                <MemberProfile key={p.node.id} name={p.node.name} bio={p.node.bio} profilePicture={p.node.profilePicture} />
-              </Fade>
-            )
-          })}
-        </CardContainer>
-      )}
-    />
-  </Section.Container>
-);
+        render={({ allContentfulMember }) => (
+          <CardContainer minWidth="350px">
+            {allContentfulMember.edges.map((p, i) => {
+              console.log(p.node)
+              return (
+                <Fade bottom delay={i * 200}>
+                  <MemberProfile onSelectMember={() => setSelectedMember(p.node)} key={p.node.id} name={p.node.name} researchFocus={p.node.researchFocus} profilePicture={p.node.profilePicture} />
+                </Fade>
+              )
+            })}
+            {selectedMember && (
+              <StyledModal
+                isOpen={selectedMember != null}
+                onBackgroundClick={() => setSelectedMember(null)}
+                onEscapeKeydown={() => setSelectedMember(null)}>
+                {/* TODO add member detail! */}
+                <span>I am {selectedMember.name}s modal</span>
+                <button onClick={() => setSelectedMember(null)}>Close me</button>
+              </StyledModal>
+            )}
+
+          </CardContainer>
+        )}
+      />
+    </Section.Container>
+  );
+}
 
 export default Members;
