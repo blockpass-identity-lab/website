@@ -4,10 +4,19 @@ import { Heading, Flex, Box, Text } from 'rebass';
 import TextLoop from 'react-text-loop';
 import { SectionLink } from 'react-scroll-section';
 import Section from '../components/Section';
+import styled from 'styled-components';
 import SocialLink from '../components/SocialLink';
 import MouseIcon from '../components/MouseIcon';
 import Triangle from '../components/Triangle';
 import Header_logo_circle from '../../media/header_logo_circle.svg';
+
+const ImageDiv = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`
 
 const Background = () => (
   <div>
@@ -69,10 +78,12 @@ const LandingPage = () => (
         fontSize={[5, 6, 8]}
         mb={[3, 4, 5]}
         >
-        {/* <div> */}
-           <img src={Header_logo_circle} width="60%" style="top: -5%;" alt="Blockpass Identity Lab"/>  
-        {/* </div> */}
+        
       </Heading>
+      <ImageDiv>
+
+           <img src={Header_logo_circle} width="53%" alt="Blockpass Identity Lab"/>  
+        </ImageDiv>
 
       <Heading
         as="h2"
