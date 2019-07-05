@@ -7,6 +7,7 @@ import Section from '../components/Section';
 import SocialLink from '../components/SocialLink';
 import MouseIcon from '../components/MouseIcon';
 import Triangle from '../components/Triangle';
+import Header_logo_circle from '../../media/header_logo_circle.svg';
 
 const Background = () => (
   <div>
@@ -67,8 +68,10 @@ const LandingPage = () => (
         color="primary"
         fontSize={[5, 6, 8]}
         mb={[3, 4, 5]}
-      >
-              Blockpass Identity Lab
+        >
+        {/* <div> */}
+           <img src={Header_logo_circle} width="60%" style="top: -5%;" alt="Blockpass Identity Lab"/>  
+        {/* </div> */}
       </Heading>
 
       <Heading
