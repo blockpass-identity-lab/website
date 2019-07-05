@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Image, Flex } from 'rebass';
 import { StaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
-import ReactMarkdown from 'react-markdown';
 import Fade from 'react-reveal/Fade';
 import Section from '../components/Section';
 import Triangle from '../components/Triangle';

@@ -1,14 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Image, Text, Flex } from 'rebass';
-import { StaticQuery, graphql } from 'gatsby';
-import styled from 'styled-components';
-import Fade from 'react-reveal/Fade';
-import Modal from 'styled-react-modal'
-import Section from '../components/Section';
-import { CardContainer, Card } from '../components/Card';
+import React from "react";
+import PropTypes from "prop-types";
+import { Image, Text, Flex } from "rebass";
+import { StaticQuery, graphql } from "gatsby";
+import styled from "styled-components";
+import Fade from "react-reveal/Fade";
+import Modal from "styled-react-modal";
+import Section from "../components/Section";
+import { CardContainer, Card } from "../components/Card";
+import ReactMarkdown from "react-markdown";
 // import SocialLink from '../components/SocialLink';
-import Triangle from '../components/Triangle';
+import Triangle from "../components/Triangle";
+import markdownRenderer from '../components/MarkdownRenderer';
 // import ImageSubtitle from '../components/ImageSubtitle';
 // import Hide from '../components/Hide';
 
@@ -16,38 +18,38 @@ const Background = () => (
   <div>
     <Triangle
       color="secondaryLight"
-      height={['80vh', '80vh']}
-      width={['100vw', '100vw']}
+      height={["80vh", "80vh"]}
+      width={["100vw", "100vw"]}
       invertX
     />
 
     <Triangle
       color="background"
-      height={['50vh', '20vh']}
-      width={['50vw', '50vw']}
+      height={["50vh", "20vh"]}
+      width={["50vw", "50vw"]}
       invertX
     />
 
     <Triangle
       color="primaryDark"
-      height={['25vh', '40vh']}
-      width={['75vw', '60vw']}
+      height={["25vh", "40vh"]}
+      width={["75vw", "60vw"]}
       invertX
       invertY
     />
 
     <Triangle
       color="backgroundDark"
-      height={['25vh', '20vh']}
-      width={['100vw', '100vw']}
+      height={["25vh", "20vh"]}
+      width={["100vw", "100vw"]}
       invertY
     />
   </div>
 );
 
-const CARD_HEIGHT = '200px';
+const CARD_HEIGHT = "200px";
 
-const MEDIA_QUERY_SMALL = '@media (max-width: 400px)';
+const MEDIA_QUERY_SMALL = "@media (max-width: 400px)";
 
 const Title = styled(Text)`
   font-size: 14px;
@@ -93,14 +95,16 @@ const ProfileImage = styled(Image)`
 `;
 
 const StyledModal = Modal.styled`
-  width: 20rem;
-  height: 20rem;
+  width: 80%;
+  height: 80%;
+  padding: 20%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0.9;
   background-color: ${props => props.theme.colors.backgroundDark};
-`
+`;
 
 const MemberTag = styled.div`
   position: relative;
@@ -115,13 +119,13 @@ const MemberTag = styled.div`
 `;
 
 const MemberProfile = ({
-  name,
-  researchFocus,
-  profilePicture,
-  onSelectMember
-}) => {
+                         name,
+                         researchFocus,
+                         profilePicture,
+                         onSelectMember
+                       }) => {
 
-  console.log(profilePicture)
+  console.log(profilePicture);
   return (
     <Card p={0} onClick={onSelectMember}>
       <Flex style={{ height: CARD_HEIGHT }}>
@@ -131,17 +135,17 @@ const MemberProfile = ({
               {name}
             </Title>
           </span>
-          <Text width={[1]} style={{ overflow: 'auto' }}>
+          <Text width={[1]} style={{ overflow: "auto" }}>
             {researchFocus}
           </Text>
         </TextContainer>
 
         <ImageContainer>
-          {profilePicture && <ProfileImage src={profilePicture.file.url} alt={profilePicture.title} />}
+          {profilePicture && <ProfileImage src={profilePicture.file.url} alt={profilePicture.title}/>}
           <MemberTag>
             <Flex
               style={{
-                float: 'right',
+                float: "right"
               }}
             >
               {/* <Box mx={1} fontSize={5}> */}
@@ -169,16 +173,16 @@ const MemberProfile = ({
       </Flex>
     </Card>
   );
-}
+};
 
 MemberProfile.propTypes = {
   name: PropTypes.string.isRequired,
   researchFocus: PropTypes.string.isRequired,
   profilePicture: PropTypes.shape({
     image: PropTypes.shape({
-      src: PropTypes.string,
-    }),
-  }).isRequired,
+      src: PropTypes.string
+    })
+  }).isRequired
 };
 
 const Members = () => {
@@ -186,12 +190,10 @@ const Members = () => {
   const [selectedMember, setSelectedMember] = React.useState(null);
 
 
-
-
   return (
 
     <Section.Container id="members" Background={Background}>
-      <Section.Header name="Members" icon="💻" Box="notebook" />
+      <Section.Header name="Members" icon="💻" Box="notebook"/>
       <StaticQuery
         query={graphql`
         query AllMemberQuery {
@@ -200,6 +202,11 @@ const Members = () => {
               node {
                 name
                 researchFocus
+                detail {
+                  childMarkdownRemark {
+                    rawMarkdownBody
+                  }
+                }
                 profilePicture {
                   title
                   file {
@@ -214,12 +221,13 @@ const Members = () => {
         render={({ allContentfulMember }) => (
           <CardContainer minWidth="350px">
             {allContentfulMember.edges.map((p, i) => {
-              console.log(p.node)
+              console.log(p.node);
               return (
                 <Fade bottom delay={i * 200}>
-                  <MemberProfile onSelectMember={() => setSelectedMember(p.node)} key={p.node.id} name={p.node.name} researchFocus={p.node.researchFocus} profilePicture={p.node.profilePicture} />
+                  <MemberProfile onSelectMember={() => setSelectedMember(p.node)} key={p.node.id} name={p.node.name}
+                                 researchFocus={p.node.researchFocus} profilePicture={p.node.profilePicture}/>
                 </Fade>
-              )
+              );
             })}
             {selectedMember && (
               <StyledModal
@@ -228,11 +236,9 @@ const Members = () => {
                 onEscapeKeydown={() => setSelectedMember(null)}
               >
                 {/* TODO add member detail! */}
-                <span>
-I am
-                  {selectedMember.name}
-s modal
-                </span>
+                <ReactMarkdown source={selectedMember.detail.childMarkdownRemark.rawMarkdownBody}
+                               renderers={markdownRenderer}
+                />
                 <button onClick={() => setSelectedMember(null)}>Close me</button>
               </StyledModal>
             )}
@@ -242,6 +248,6 @@ s modal
       />
     </Section.Container>
   );
-}
+};
 
 export default Members;
