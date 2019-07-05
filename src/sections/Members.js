@@ -98,6 +98,7 @@ const StyledModal = Modal.styled`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.9;
   background-color: ${props => props.theme.colors.backgroundDark};
 `
 

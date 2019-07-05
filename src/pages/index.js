@@ -7,11 +7,13 @@ import Landing from '../sections/Landing';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Members from "../sections/Members";
+import About from "../sections/About";
 
 const IndexPage = () => (
   <Layout>
     <Header />
     <Landing />
+    <About/>
     <Members />
     <Footer />
   </Layout>
