@@ -14,6 +14,8 @@ import ReactMarkdown from "react-markdown";
 // import SocialLink from '../components/SocialLink';
 import markdownRenderer from '../components/MarkdownRenderer';
 import Modal from "styled-react-modal";
+import { Link} from "gatsby"
+
 
 const Background = () => (
   <div>
@@ -128,11 +130,14 @@ const BlogTag = styled.div`
 
 const BlogPostView = ({
   title,
-  onSelectBlog
+  onSelectBlog,
+  id
   // Blog Post,
 }) => {
   return (
-    <Card onClick={onSelectBlog} p={0}>
+    <Link to={id}>
+
+    <Card  p={0}>
       <Flex style={{ height: CARD_HEIGHT }}>
         <TextContainer>
           <Title my={2} pb={1}>
@@ -142,6 +147,7 @@ const BlogPostView = ({
 
       </Flex>
     </Card>
+    </Link>
   );
 }
 
@@ -174,6 +180,7 @@ const BlogPosts = () => {
                 }
                }
                title
+               id
              }
             }
           }
@@ -185,7 +192,7 @@ const BlogPosts = () => {
               console.log(p.node)
               return (
                 <Fade bottom delay={i * 200}>
-                  <BlogPostView onSelectBlog={() => setSelectedBlog(p.node)} key={p.node.id} title={p.node.title} />
+                  <BlogPostView id={p.node.id} onSelectBlog={() => setSelectedBlog(p.node)} key={p.node.id} title={p.node.title} />
                   {/* documentToReactComponents(node.bodyRichText.json, RichTextContainer) */}
                 </Fade>
               )

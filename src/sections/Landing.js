@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import SocialLink from '../components/SocialLink';
 import MouseIcon from '../components/MouseIcon';
 import Triangle from '../components/Triangle';
-import { Link} from "gatsby"
 import Header_logo_circle from '../../media/header_logo_circle.svg';
 
 const ImageDiv = styled.div`
