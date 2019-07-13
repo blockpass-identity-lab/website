@@ -130,7 +130,6 @@ const BlogTag = styled.div`
 
 const BlogPostView = ({
   title,
-  onSelectBlog,
   id
   // Blog Post,
 }) => {

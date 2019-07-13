@@ -1,9 +1,53 @@
 import React from 'react';
 import Layout from "../components/Layout";
+import ReactMarkdown from "react-markdown";
+import markdownRenderer from "../components/MarkdownRenderer";
+import Section from "../components/Section";
+import Triangle from "../components/Triangle";
 
-const  BlogTemplate = () => {
+const Background = () => (
+  <div>
+    <Triangle
+      color="primaryDark"
+      height={['80vh', '80vh']}
+      width={['100vw', '100vw']}
+      invertX
+    />
+
+    <Triangle
+      color="background"
+      height={['50vh', '20vh']}
+      width={['50vw', '50vw']}
+      invertX
+    />
+
+    <Triangle
+      color="primaryDark"
+      height={['25vh', '40vh']}
+      width={['75vw', '60vw']}
+      invertX
+      invertY
+    />
+
+    <Triangle
+      color="backgroundDark"
+      height={['25vh', '20vh']}
+      width={['100vw', '100vw']}
+      invertY
+    />
+  </div>
+);
+
+const  BlogTemplate = ({data}) => {
+  console.log(data);
   return (<Layout>
-    <div>THis is a template</div>
+    <Section.Container Background={Background}>
+      <Section.Header name={data.contentfulBlogPost.title} icon="💻" />
+
+      <ReactMarkdown source={data.contentfulBlogPost.blog.childMarkdownRemark.rawMarkdownBody}
+                   renderers={markdownRenderer}
+    />
+    </Section.Container>
   </Layout>)
 };
 
