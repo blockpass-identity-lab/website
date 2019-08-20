@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, Text, Flex } from 'rebass';
-import { StaticQuery, graphql } from 'gatsby';
+import { Text, Flex } from 'rebass';
+import { StaticQuery, Link, graphql } from 'gatsby';
+import Modal from "styled-react-modal";
 import styled from 'styled-components';
+import ReactMarkdown from "react-markdown";
 import Fade from 'react-reveal/Fade';
 import Section from '../components/Section';
 import { CardContainer, Card } from '../components/Card';
@@ -10,11 +12,8 @@ import { CardContainer, Card } from '../components/Card';
 import Triangle from '../components/Triangle';
 // import ImageSubtitle from '../components/ImageSubtitle';
 // import Hide from '../components/Hide';
-import ReactMarkdown from "react-markdown";
 // import SocialLink from '../components/SocialLink';
 import markdownRenderer from '../components/MarkdownRenderer';
-import Modal from "styled-react-modal";
-import { Link} from "gatsby"
 
 
 const Background = () => (
@@ -165,8 +164,8 @@ const BlogPosts = () => {
   const [selectedBlog, setSelectedBlog] = React.useState(null);
 
   return (
-    <Section.Container id="BlogPost" Background={Background}>
-      <Section.Header name="BlogPost" icon="💻" Box="notebook" />
+    <Section.Container id="Blogs" Background={Background}>
+      <Section.Header name="Blogs" icon="💻" Box="notebook" />
       <StaticQuery
         query={graphql`
       query AllBlogPostQuery {
@@ -200,22 +199,6 @@ const BlogPosts = () => {
 
         )}
       />
-      {selectedBlog && (
-        <StyledModal
-          isOpen={selectedBlog != null}
-          onBackgroundClick={() => setSelectedBlog(null)}
-          onEscapeKeydown={() => setSelectedBlog(null)}
-        >
-          {/* TODO add member detail! */}
-          {/*<ModalDiv>*/}
-          <h1>{selectedBlog.title}</h1>
-          <ReactMarkdown source={selectedBlog.blog.childMarkdownRemark.rawMarkdownBody}
-                         renderers={markdownRenderer}
-          />
-          {/*</ModalDiv>*/}
-          <button onClick={() => setSelectedBlog(null)}>Close me</button>
-        </StyledModal>
-      )}
     </Section.Container>
   );
 }

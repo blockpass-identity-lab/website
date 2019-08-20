@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Image, Text, Flex } from "rebass";
-import { StaticQuery, graphql } from "gatsby";
+import { StaticQuery, graphql, Link } from "gatsby";
 import styled from "styled-components";
 import Fade from "react-reveal/Fade";
 import Modal from "styled-react-modal";
@@ -10,7 +10,7 @@ import { CardContainer, Card } from "../components/Card";
 import ReactMarkdown from "react-markdown";
 // import SocialLink from '../components/SocialLink';
 import Triangle from "../components/Triangle";
-import markdownRenderer from '../components/MarkdownRenderer';
+import markdownRenderer from "../components/MarkdownRenderer";
 // import ImageSubtitle from '../components/ImageSubtitle';
 // import Hide from '../components/Hide';
 
@@ -118,16 +118,18 @@ const MemberTag = styled.div`
   }
 `;
 
-const MemberProfile = ({
-                         name,
-                         researchFocus,
-                         profilePicture,
-                         onSelectMember
-                       }) => {
+
+
+const MemberCard = ({
+                      name,
+                      researchFocus,
+                      profilePicture,
+                    }) => {
 
   console.log(profilePicture);
   return (
-    <Card p={0} onClick={onSelectMember}>
+    <Link to={name}>
+    <Card p={0}>
       <Flex style={{ height: CARD_HEIGHT }}>
         <TextContainer>
           <span>
@@ -156,26 +158,16 @@ const MemberProfile = ({
               {/* /> */}
               {/* </Box> */}
             </Flex>
-            {/* <ImageSubtitle */}
-            {/* bg="primaryLight" */}
-            {/* color="white" */}
-            {/* y="bottom" */}
-            {/* x="right" */}
-            {/* round */}
-            {/* > */}
-            {/* {type} */}
-            {/* </ImageSubtitle> */}
-            {/* <Hide query={MEDIA_QUERY_SMALL}> */}
-            {/* <ImageSubtitle bg="backgroundDark">{publishedDate}</ImageSubtitle> */}
-            {/* </Hide> */}
+
           </MemberTag>
         </ImageContainer>
       </Flex>
     </Card>
+    </Link>
   );
 };
 
-MemberProfile.propTypes = {
+MemberCard.propTypes = {
   name: PropTypes.string.isRequired,
   researchFocus: PropTypes.string.isRequired,
   profilePicture: PropTypes.shape({
@@ -224,24 +216,11 @@ const Members = () => {
               console.log(p.node);
               return (
                 <Fade bottom delay={i * 200}>
-                  <MemberProfile onSelectMember={() => setSelectedMember(p.node)} key={p.node.id} name={p.node.name}
-                                 researchFocus={p.node.researchFocus} profilePicture={p.node.profilePicture}/>
+                  <MemberCard key={p.node.id} name={p.node.name}
+                              researchFocus={p.node.researchFocus} profilePicture={p.node.profilePicture}/>
                 </Fade>
               );
             })}
-            {selectedMember && (
-              <StyledModal
-                isOpen={selectedMember != null}
-                onBackgroundClick={() => setSelectedMember(null)}
-                onEscapeKeydown={() => setSelectedMember(null)}
-              >
-                {/* TODO add member detail! */}
-                <ReactMarkdown source={selectedMember.detail.childMarkdownRemark.rawMarkdownBody}
-                               renderers={markdownRenderer}
-                />
-                <button onClick={() => setSelectedMember(null)}>Close me</button>
-              </StyledModal>
-            )}
 
           </CardContainer>
         )}
